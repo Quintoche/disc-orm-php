@@ -1,0 +1,19 @@
+{
+    "name": "discite/discite-orm",
+    "description": "Mysqli ORM in php",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "DisciteOrm\\": "src/DisciteOrm/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Romain Quintainer",
+            "email": "quintainer@icloud.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
