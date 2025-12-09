@@ -7,9 +7,6 @@ require_once __DIR__ . '../../vendor/autoload.php';
 
 use DisciteOrm\DisciteOrm;
 
-
-
-
 $disciteORM = new DisciteOrm();
 
 // $col = new Column('id');
@@ -25,10 +22,13 @@ $disciteORM = new DisciteOrm();
 //     ->addColumn($col);
 
 
-$disciteORM->database('database')->table('users')
-    ->select(['id', 'name', 'email'])
-    ->where('id', 1)
+echo $disciteORM->database()->table('users')
+    ->select('id', 'name', 'email')
+    ->where('id', '1')
+    ->where('name', 'John Doe')
+    ->where('email', 'john@example.com')
     ->get();
+    // ->and()
     // ->create(['name' => 'John Doe', 'email' => 'john@example.com'])
     // ->update(['name' => 'John Doe'])
     // ->delete('id', 1)

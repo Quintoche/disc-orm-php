@@ -4,23 +4,24 @@ namespace DisciteOrm\Builder\Clauses;
 
 use DisciteOrm\Configurations\Enums\Query\QueryClauses;
 
-trait WhereClause
+trait NotHavingClause
 {
     /**
-     * Adds a where condition to the query.
+     * Adds a not condition to the query.
      *
      * @param string $field
      * @param mixed $value
      * 
-     * @return \DisciteOrm\Core\QueryBuilder The query builder instance.
+     * @return \DisciteOrm\Core\QueryBuilder
      */
-    public function where(string $field, mixed $value): static
+    public function notHaving(string $field, mixed $value): static
     {
         $this->clauses[] = [
-            'type' => (is_null($value)) ? QueryClauses::Null : QueryClauses::Equal,
+            'type' => QueryClauses::NotHaving,
             'field' => $field,
             'value' => $value,
         ];
+
         return $this;
     }
 }

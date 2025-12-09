@@ -4,6 +4,7 @@ namespace DisciteOrm;
 
 use DisciteOrm\Configurations\Contracts\TableAbstract;
 use DisciteOrm\Configurations\Contracts\TableInterface;
+use DisciteOrm\Core\QueryBuilder;
 use DisciteOrm\Tables\Table;
 use mysqli;
 
@@ -26,9 +27,12 @@ class Database
     }
 
 
-    public function table(string $tableName): TableAbstract
+    public function table(string $tableName): QueryBuilder
     {
-        return new Table($tableName);
+        return new QueryBuilder(
+            new Table($tableName),
+            null,
+        );
     }
 }
 

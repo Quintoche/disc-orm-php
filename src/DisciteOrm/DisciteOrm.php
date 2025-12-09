@@ -30,7 +30,7 @@ class DisciteOrm
         return $this->config;   
     }
 
-    public function database(string $databaseName) : Database
+    public function database(?string $databaseName = null) : Database
     {
         return $this->database->database($databaseName);
     }

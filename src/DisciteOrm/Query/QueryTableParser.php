@@ -5,7 +5,7 @@ namespace DisciteOrm\Query;
 use DisciteOrm\Configurations\Contracts\TableAbstract;
 use DisciteOrm\Utilities\Formats\ToStringTable;
 
-class QueryTable
+class QueryTableParser
 {
     public static function toSql(TableAbstract $table) : string
     {

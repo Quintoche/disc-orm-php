@@ -9,7 +9,7 @@ use DisciteOrm\Utilities\Formats\ToDisplayTableColumn;
 use DisciteOrm\Utilities\Query\CheckColumn;
 use DisciteOrm\Utilities\Query\CheckUsage;
 
-class QueryColumns
+class QueryColumnsParser
 {
     public static function toSql(array $columns, TableAbstract $table, QueryType $queryType) : string
     {

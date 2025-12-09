@@ -2,6 +2,8 @@
 
 namespace DisciteOrm;
 
+use DateTime;
+use DateTimeZone;
 use mysqli;
 
 class DisciteConnection
@@ -66,7 +68,8 @@ class DisciteConnection
      */
     private function timezone() : void
     {
-        self::$mysqli->query("SET time_zone = '" . DisciteConst::TIMEZONE_DEFAULT_CONFIG . "'");
+        $tz = (new DateTime('now', new DateTimeZone(DisciteConst::TIMEZONE_DEFAULT_CONFIG)))->format('P');
+        self::$mysqli->query("SET time_zone = '" . $tz . "'");
     }
 
     /**

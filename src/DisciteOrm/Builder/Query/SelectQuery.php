@@ -3,10 +3,6 @@
 namespace DisciteOrm\Builder\Query;
 
 use DisciteOrm\Configurations\Enums\Query\QueryType;
-use DisciteOrm\Configurations\Query\QueryBase;
-use DisciteOrm\Core\QueryBuilder;
-use DisciteOrm\Tables\_All;
-use DisciteOrm\Utilities\Paths\TraitNameToQueryBase;
 
 trait SelectQuery
 {
@@ -15,21 +11,17 @@ trait SelectQuery
      *
      * @param array<string|ColumnAbstract> $columns The columns to select.
      * 
-     * @return QueryBuilder The query builder instance.
+     * @return \DisciteOrm\Core\QueryBuilder The query builder instance.
      */
-    public function listing(array $columns = [new _All()]): QueryBuilder
+    public function listing(mixed ...$columns): static
     {
-        $queryBuilder = new QueryBuilder(
-            $this,
-            QueryType::SELECT,
-        );
+        $this->type(QueryType::SELECT);
 
         foreach($columns as $column)
         {
-            $queryBuilder->addColumn($column);
+            $this->columns[] = $column;
         }
-
-        return $queryBuilder;
+        return $this;
     }
 
     /**
@@ -37,21 +29,17 @@ trait SelectQuery
      *
      * @param array<string|ColumnAbstract> $columns The columns to select.
      * 
-     * @return QueryBuilder The query builder instance.
+     * @return \DisciteOrm\Core\QueryBuilder The query builder instance.
      */
-    public function select(array $columns = [new _All()]): QueryBuilder
+    public function select(mixed ...$columns) : static
     {
-        $queryBuilder = new QueryBuilder(
-            $this,
-            QueryType::SELECT,
-        );
+        $this->type(QueryType::SELECT);
 
         foreach($columns as $column)
         {
-            $queryBuilder->addColumn($column);
+            $this->columns[] = $column;
         }
-
-        return $queryBuilder;
+        return $this;
     }
 }
 

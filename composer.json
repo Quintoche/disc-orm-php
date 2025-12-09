@@ -1,5 +1,5 @@
 {
-    "name": "discite/discite-orm",
+    "name": "discite/discite-orm-php",
     "description": "Mysqli ORM in php",
     "type": "library",
     "license": "MIT",

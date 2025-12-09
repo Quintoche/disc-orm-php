@@ -2,18 +2,52 @@
 
 namespace DisciteOrm\Core;
 
+use DisciteOrm\Builder\Clauses\BetweenClause;
+use DisciteOrm\Builder\Clauses\InClause;
+use DisciteOrm\Builder\Clauses\LessOrEqualClause;
+use DisciteOrm\Builder\Clauses\LessThanClause;
+use DisciteOrm\Builder\Clauses\LikeClause;
+use DisciteOrm\Builder\Clauses\MoreOrEqualClause;
+use DisciteOrm\Builder\Clauses\MoreThanClause;
+use DisciteOrm\Builder\Clauses\NotBetweenClause;
+use DisciteOrm\Builder\Clauses\NotClause;
+use DisciteOrm\Builder\Clauses\NotInClause;
+use DisciteOrm\Builder\Clauses\NotLikeClause;
+use DisciteOrm\Builder\Clauses\OrClause;
 use DisciteOrm\Builder\Clauses\WhereClause;
+use DisciteOrm\Builder\Query\DeleteQuery;
+use DisciteOrm\Builder\Query\InsertQuery;
+use DisciteOrm\Builder\Query\SelectQuery;
+use DisciteOrm\Builder\Query\UpdateQuery;
 use DisciteOrm\Configurations\Contracts\TableAbstract;
 use DisciteOrm\Configurations\Enums\Query\QueryType;
 use DisciteOrm\Configurations\Query\QueryBase;
-use DisciteOrm\Query\QueryColumns;
-use DisciteOrm\Query\QueryTable;
+use DisciteOrm\Query\QueryClausesParser;
+use DisciteOrm\Query\QueryColumnsParser;
+use DisciteOrm\Query\QueryModifiersParser;
+use DisciteOrm\Query\QueryTableParser;
 use DisciteOrm\Reader\GetReader;
 
 class QueryBuilder
 {
-    use WhereClause;
+    use SelectQuery;
+    use DeleteQuery;
+    use InsertQuery;
+    use UpdateQuery;
 
+    use WhereClause;
+    use BetweenClause;
+    use InClause;
+    use LessOrEqualClause;
+    use LessThanClause;
+    use LikeClause;
+    use MoreOrEqualClause;
+    use MoreThanClause;
+    use NotBetweenClause;
+    use NotClause;
+    use NotInClause;
+    use NotLikeClause;
+    use OrClause;
 
     use GetReader;
 
@@ -23,31 +57,26 @@ class QueryBuilder
 
     protected TableAbstract $table;
 
-    protected ?array $data = null;
+    protected array $data = [];
 
-    protected ?array $conditions = null;
+    protected array $columns = [];
+
+    protected array $clauses = [];
+
+    protected array $modifiers = [];
 
     protected string $queryString = '';
 
 
-
-
-    protected array $columns = [];
-
-    public function __construct(
-        ?TableAbstract $table = null,
-        ?QueryType $queryType = null,
-    )
+    public function __construct(?TableAbstract $table = null)
     {
         $this->table = $table;
-        $this->queryType = $queryType;
-
-        $this->queryBase = QueryBase::fromQueryType($queryType);
     }
 
     protected function retrieveQueryString() : string
     {
         $this->buildQuery();
+        
         return $this->queryString;
     }
 
@@ -56,6 +85,7 @@ class QueryBuilder
         if($queryType)
         {
             $this->queryType = $queryType;
+            $this->queryBase = QueryBase::fromQueryType($queryType);
             return $this;
         }
         else
@@ -64,98 +94,22 @@ class QueryBuilder
         }
     }
 
-    public function base(?QueryBase $queryBase = null): QueryBase|static
-    {
-        if($queryBase)
-        {
-            $this->queryBase = $queryBase;
-            return $this;
-        }
-        else
-        {
-            return $this->queryBase;
-        }
-    }
-    
-    public function table(?TableAbstract $table = null): TableAbstract|static
-    {
-        if($table)
-        {
-            $this->table = $table;
-            return $this;
-        }
-        else
-        {
-            return $this->table;
-        }
-    }
-
-    public function data(?array $data = null): array|static
-    {
-        if($data)
-        {
-            $this->data = $data;
-            return $this;
-        }
-        else
-        {
-            return $this->data;
-        }
-    }
-
-
-    public function addColumn(string $columns) : static
-    {
-        $this->columns[] = $columns;
-        return $this;
-    }
-
-
-    public function columns(?array $columns = null) : array|static
-    {
-        if($columns)
-        {
-            $this->columns = $columns;
-            return $this;
-        }
-        else
-        {
-            return $this->columns;
-        }
-    }
-
-
-    public function conditions(?array $conditions = null) : array|static
-    {
-        if($conditions)
-        {
-            $this->conditions = $conditions;
-            return $this;
-        }
-        else
-        {
-            return $this->conditions;
-        }
-    }
-
     private function buildQuery()
     {
         $this->queryString = str_replace(
             [
-                '{TABLE}',
-                '{COLUMNS}',
-                '{VALUES}',
-                '{CONDITIONS}',
-                '{ORDER}',
-                '{LIMIT}',
+                '{table}',
+                '{columns}',
+                '{values}',
+                '{clauses}',
+                '{modifiers}',
             ],
             [
                 $this->buildTable(),
                 $this->buildColumns(),
                 $this->buildValues(),
-                $this->buildConditions(),
-                $this->buildOrder(),
-                $this->buildLimit(),
+                $this->buildClauses(),
+                $this->buildModifiers(),
             ],
             $this->queryBase->value
         );
@@ -163,12 +117,12 @@ class QueryBuilder
 
     private function buildTable() : string
     {
-        return QueryTable::toSql($this->table);
+        return QueryTableParser::toSql($this->table);
     }
 
     private function buildColumns() : string
     {
-        return QueryColumns::toSql($this->columns, $this->table, $this->queryType);
+        return QueryColumnsParser::toSql($this->columns, $this->table, $this->queryType);
     }
 
     private function buildValues() : string
@@ -177,22 +131,14 @@ class QueryBuilder
         return '';
     }
 
-    private function buildConditions() : string
+    private function buildClauses() : string
     {
-        // Implementation for building where clause
-        return '';
+        return QueryClausesParser::toSql($this->clauses);
     }
 
-    private function buildOrder() : string
+    private function buildModifiers() : string
     {
-        // Implementation for building order clause
-        return '';
-    }
-
-    private function buildLimit() : string
-    {
-        // Implementation for building limit clause
-        return '';
+        return QueryModifiersParser::toSql($this->modifiers);
     }
 }
 

@@ -4,23 +4,24 @@ namespace DisciteOrm\Builder\Clauses;
 
 use DisciteOrm\Configurations\Enums\Query\QueryClauses;
 
-trait WhereClause
+trait LessThanClause
 {
     /**
-     * Adds a where condition to the query.
+     * Adds a less than condition to the query.
      *
      * @param string $field
      * @param mixed $value
      * 
-     * @return \DisciteOrm\Core\QueryBuilder The query builder instance.
+     * @return \DisciteOrm\Core\QueryBuilder
      */
-    public function where(string $field, mixed $value): static
+    public function lessThan(string $field, mixed $value): static
     {
         $this->clauses[] = [
-            'type' => (is_null($value)) ? QueryClauses::Null : QueryClauses::Equal,
+            'type' => QueryClauses::LessThan,
             'field' => $field,
             'value' => $value,
         ];
+
         return $this;
     }
 }

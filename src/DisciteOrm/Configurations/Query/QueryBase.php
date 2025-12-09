@@ -10,8 +10,8 @@ enum QueryBase : string
     /**
      * SQL SELECT query type.
      */
-    case SELECT = 'SELECT {columns} FROM {table} {conditions} {order} {limit}';
-    
+    case SELECT = 'SELECT {columns} FROM {table} {clauses} {modifiers}';
+
 
     /**
      * SQL INSERT query type.
@@ -21,13 +21,13 @@ enum QueryBase : string
     /**
      * SQL UPDATE query type.
      */
-    case UPDATE = 'UPDATE {table} SET {values} WHERE {conditions}';
+    case UPDATE = 'UPDATE {table} SET {values} WHERE {clauses}';
     
 
     /**
      * SQL DELETE query type.
      */
-    case DELETE = 'DELETE FROM {table} WHERE {conditions}';
+    case DELETE = 'DELETE FROM {table} WHERE {clauses}';
 
     /**
      * Get the QueryBase from a QueryType.

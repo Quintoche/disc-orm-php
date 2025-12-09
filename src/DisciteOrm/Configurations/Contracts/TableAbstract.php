@@ -2,10 +2,6 @@
 
 namespace DisciteOrm\Configurations\Contracts;
 
-use DisciteOrm\Builder\Query\DeleteQuery;
-use DisciteOrm\Builder\Query\InsertQuery;
-use DisciteOrm\Builder\Query\SelectQuery;
-use DisciteOrm\Builder\Query\UpdateQuery;
 use DisciteOrm\Configurations\Enums\Query\QuerySort;
 use DisciteOrm\Configurations\Enums\Tables\Permissions;
 use DisciteOrm\Configurations\Enums\Tables\Type;
@@ -13,12 +9,6 @@ use DisciteOrm\Configurations\Enums\Tables\Type;
 
 abstract class TableAbstract implements TableInterface
 {
-    use SelectQuery;   
-    use InsertQuery;
-    use UpdateQuery;
-    use DeleteQuery;
-
-
     /**
      * TableAbstract constructor.
      *
