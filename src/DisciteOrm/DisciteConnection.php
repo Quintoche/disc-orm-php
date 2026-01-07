@@ -33,9 +33,27 @@ class DisciteConnection
         else
         {
             $this->connect();
-        }
-        
-        
+        }   
+    }
+
+    /**
+     * Get the current mysqli connection.
+     *
+     * @return ?mysqli The mysqli connection instance.
+     */
+    public static function getConnection() : ?mysqli
+    {
+        return self::$mysqli;
+    }
+
+    /**
+     * Get the name of the currently selected database.
+     *
+     * @return ?string The name of the current database or null if not connected.
+     */
+    public static function getDatabaseName() : ?string
+    {
+        return self::$mysqli ? self::$mysqli->query("SELECT DATABASE()")->fetch_row()[0] : null;
     }
 
     /**
@@ -43,8 +61,9 @@ class DisciteConnection
      */
     public function __destruct()
     {
-        if (self::$mysqli) {
-            self::$mysqli->close();
+        if(self::$mysqli)
+        {
+            // self::$mysqli->close();
         }
     }
 

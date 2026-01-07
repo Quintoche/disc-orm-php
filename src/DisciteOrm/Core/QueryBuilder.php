@@ -15,18 +15,30 @@ use DisciteOrm\Builder\Clauses\NotInClause;
 use DisciteOrm\Builder\Clauses\NotLikeClause;
 use DisciteOrm\Builder\Clauses\OrClause;
 use DisciteOrm\Builder\Clauses\WhereClause;
+use DisciteOrm\Builder\Modifiers\OrderModifier;
+use DisciteOrm\Builder\Modifiers\LimitModifier;
 use DisciteOrm\Builder\Query\DeleteQuery;
 use DisciteOrm\Builder\Query\InsertQuery;
 use DisciteOrm\Builder\Query\SelectQuery;
 use DisciteOrm\Builder\Query\UpdateQuery;
 use DisciteOrm\Configurations\Contracts\TableAbstract;
+use DisciteOrm\Configurations\Enums\Query\QueryReturns;
 use DisciteOrm\Configurations\Enums\Query\QueryType;
 use DisciteOrm\Configurations\Query\QueryBase;
 use DisciteOrm\Query\QueryClausesParser;
 use DisciteOrm\Query\QueryColumnsParser;
 use DisciteOrm\Query\QueryModifiersParser;
 use DisciteOrm\Query\QueryTableParser;
-use DisciteOrm\Reader\GetReader;
+use DisciteOrm\Query\QueryValuesParser;
+use DisciteOrm\Builder\Readers\AllReader;
+use DisciteOrm\Builder\Readers\CountReader;
+use DisciteOrm\Builder\Readers\ExistsReader;
+use DisciteOrm\Builder\Readers\FindReader;
+use DisciteOrm\Builder\Readers\FirstReader;
+use DisciteOrm\Builder\Readers\GetReader;
+use DisciteOrm\Builder\Readers\LastReader;
+use DisciteOrm\Builder\Readers\NextReader;
+use DisciteOrm\Builder\Readers\Reader;
 
 class QueryBuilder
 {
@@ -49,11 +61,26 @@ class QueryBuilder
     use NotLikeClause;
     use OrClause;
 
+    use LimitModifier;
+    use OrderModifier;
+
+    use Reader;
     use GetReader;
+    use AllReader;
+    use FindReader;
+    use LastReader;
+    use NextReader;
+    use FirstReader;
+    use CountReader;
+    use ExistsReader;
 
     protected QueryBase $queryBase;
     
     protected QueryType $queryType;
+
+    protected QueryReturns $returnType = QueryReturns::ARRAY;
+
+    protected ?QueryResult $queryResult = null;
 
     protected TableAbstract $table;
 
@@ -73,6 +100,11 @@ class QueryBuilder
         $this->table = $table;
     }
 
+    /**
+     * Retrieve the query string.
+     *
+     * @return string The constructed query string.
+     */
     protected function retrieveQueryString() : string
     {
         $this->buildQuery();
@@ -80,6 +112,13 @@ class QueryBuilder
         return $this->queryString;
     }
 
+    /**
+     * Get or set the query type.
+     *
+     * @param QueryType|null $queryType The query type to set (optional).
+     * 
+     * @return QueryType|static The current query type or the instance for chaining.
+     */
     public function type(?QueryType $queryType = null): QueryType|static
     {
         if($queryType)
@@ -94,6 +133,11 @@ class QueryBuilder
         }
     }
 
+    /**
+     * Build the SQL query string.
+     * 
+     * @return void
+     */
     private function buildQuery()
     {
         $this->queryString = str_replace(
@@ -115,27 +159,46 @@ class QueryBuilder
         );
     }
 
+    /** Build table as SQL string.
+     *
+     * @return string
+     */
     private function buildTable() : string
     {
         return QueryTableParser::toSql($this->table);
     }
 
+    /** Build columns as SQL string.
+     *
+     * @return string
+     */
     private function buildColumns() : string
     {
         return QueryColumnsParser::toSql($this->columns, $this->table, $this->queryType);
     }
 
+    /** Build values as SQL string.
+     *
+     * @return string
+     */
     private function buildValues() : string
     {
-        // Implementation for building values
-        return '';
+        return QueryValuesParser::toSql($this->data, $this->table, $this->queryType);
     }
 
+    /** Build clauses as SQL string.
+     *
+     * @return string
+     */
     private function buildClauses() : string
     {
         return QueryClausesParser::toSql($this->clauses);
     }
 
+    /** Build modifiers as SQL string.
+     *
+     * @return string
+     */
     private function buildModifiers() : string
     {
         return QueryModifiersParser::toSql($this->modifiers);

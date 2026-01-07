@@ -3,7 +3,9 @@
 namespace DisciteOrm;
 
 use DisciteOrm\Configurations\Contracts\TableAbstract;
+use DisciteOrm\Core\ColumnsManager;
 use DisciteOrm\Core\TablesManager;
+use DisciteOrm\Tables\Column;
 use mysqli;
 
 class DisciteOrm
@@ -16,13 +18,19 @@ class DisciteOrm
 
     private TablesManager $tablesManager;
 
+    private ColumnsManager $columnsManager;
+
     public function __construct(?mysqli $connection = null)
     {
         $this->connection = $connection ? new DisciteConnection($connection) : new DisciteConnection();
 
         $this->config = new DisciteConfiguration();
         
-        $this->database = new Database();
+        $this->tablesManager = new TablesManager();
+        
+        $this->columnsManager = new ColumnsManager();
+        
+        $this->database = new Database($this->tablesManager, $this->columnsManager);
     }
 
     public function configuration() : DisciteConfiguration
@@ -40,7 +48,15 @@ class DisciteOrm
         return $this->connection::$mysqli;
     }
 
-    
+    public function tables() : TablesManager
+    {
+        return $this->tablesManager;
+    }
+
+    public function columns() : ColumnsManager
+    {
+        return $this->columnsManager;
+    }
 }
 
 ?>

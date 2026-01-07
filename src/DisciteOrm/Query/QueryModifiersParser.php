@@ -10,10 +10,25 @@ use DisciteOrm\Utilities\Formats\ToStringValue;
 
 class QueryModifiersParser
 {
+    /** 
+     * Clause separator 
+     * 
+     * @var string
+    */
     private const CLAUSE_SEPARATOR = ' ';
 
+    /** 
+     * Clause format 
+     * 
+     * @var string
+    */
     private const CLAUSE_FORMAT = '%s %s %s';
 
+    /** Convert modifiers to SQL string representation.
+     *
+     * @param array|null $modifiers
+     * @return string
+     */
     public static function toSql(?array $modifiers) : string
     {
         if(empty($modifiers))
@@ -24,6 +39,11 @@ class QueryModifiersParser
         return self::render($modifiers);
     }
 
+    /** Render modifiers as SQL string.
+     *
+     * @param array $modifiers
+     * @return string
+     */
     private static function render(array $modifiers) : string
     {
         foreach(self::sortModifiers($modifiers) as $index => $modifier)
@@ -35,8 +55,11 @@ class QueryModifiersParser
         return implode(self::CLAUSE_SEPARATOR, $modifiers);
     }
 
-
-
+    /** Render a single modifier as SQL string.
+     *
+     * @param array $modifier
+     * @return string
+     */
     private static function renderModifier(array $modifier) : string
     {
         $field = (is_null($modifier['field'])) ? $modifier['field'] : self::formatField($modifier['field']);
@@ -49,18 +72,34 @@ class QueryModifiersParser
         );
     }
 
+    /** Format field name to SQL string.
+     *
+     * @param string $field
+     * @return string
+     */
     private static function formatField(string $field) : string
     {
         return ToStringColumn::render($field);
     }
 
+    /** Format value to SQL string.
+     *
+     * @param mixed $value
+     * @return string
+     */
     private static function formatValue(mixed $value) : string
     {
         return ToStringValue::render($value);
     }
 
-
-    private static function buildClause(QueryClauses $type, mixed $field, mixed $value) : string
+    /** Build SQL clause string.
+     *
+     * @param QueryModifiers $type
+     * @param mixed $field
+     * @param mixed $value
+     * @return string
+     */
+    private static function buildClause(QueryModifiers $type, mixed $field, mixed $value) : string
     {
         return match($type)
         {
@@ -70,7 +109,13 @@ class QueryModifiersParser
         };
     }
 
-    private static function buildValue(QueryClauses $type, mixed $value) : string
+    /** Build value string based on modifier type.
+     *
+     * @param QueryModifiers $type
+     * @param mixed $value
+     * @return string
+     */
+    private static function buildValue(QueryModifiers $type, mixed $value) : string
     {
         return match(true)
         {
@@ -81,6 +126,11 @@ class QueryModifiersParser
         };
     }
 
+    /** Sort modifiers based on predefined order.
+     *
+     * @param array $modifiers
+     * @return array
+     */
     private static function sortModifiers(array $modifiers) : array
     {
         usort($modifiers, function ($a, $b) {

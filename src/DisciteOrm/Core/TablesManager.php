@@ -36,6 +36,16 @@ class TablesManager
         return $this->tables[$name] ?? null;
     }
 
+    /**
+     * Retrieves all registered tables.
+     *
+     * @return array<string, TableAbstract> The array of registered tables.
+     */
+    public function getTables() : array
+    {
+        return $this->tables;
+    }
+
 }
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-namespace DisciteOrm\Builder\Clauses;
+namespace DisciteOrm\Builder\Modifiers;
 
 use DisciteOrm\Configurations\Enums\Query\QueryModifiers;
 use DisciteOrm\Configurations\Enums\Query\QuerySort;

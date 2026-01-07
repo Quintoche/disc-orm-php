@@ -13,46 +13,100 @@ use DisciteOrm\DisciteConfiguration;
 
 class CheckColumn
 {
+    /** Check if column exists in table based on configuration.
+     *
+     * @param string $columnName
+     * @param TableAbstract $table
+     * @return bool
+     */
     public static function exists(string $columnName, TableAbstract $table): bool
     {
         return (DisciteConfiguration::usageColumn()->value == ColumnUsage::STRICT->value) ? array_key_exists($columnName, $table->columns(), true) : true;
     }
 
+    /** Check if column is secured in table based on column object.
+     *
+     * @param ColumnAbstract $column
+     * @param TableAbstract $table
+     * @return bool
+     */
     public static function secured(ColumnAbstract $column, TableAbstract $table) : bool
     {
         return ($table->columns()[$column->name()]->secured()->value == BoolSecured::TRUE->value) ? true : false;
     }
 
+    /** Check if column is updatable in table based on column object.
+     *
+     * @param ColumnAbstract $column
+     * @param TableAbstract $table
+     * @return bool
+     */
     public static function updatable(ColumnAbstract $column, TableAbstract $table) : bool
     {
         return ($table->columns()[$column->name()]->updatable()->value == BoolUpdatable::TRUE->value) ? true : false;
     }
 
+    /** Check if column is creatable in table based on column object.
+     *
+     * @param ColumnAbstract $column
+     * @param TableAbstract $table
+     * @return bool
+     */
     public static function creatable(ColumnAbstract $column, TableAbstract $table) : bool
     {
         return ($table->columns()[$column->name()]->creatable()->value == BoolCreatable::TRUE->value) ? true : false;
     }
 
+    /** Check if column is nullable in table based on column object.
+     *
+     * @param ColumnAbstract $column
+     * @param TableAbstract $table
+     * @return bool
+     */
     public static function nullable(ColumnAbstract $column, TableAbstract $table) : bool
     {
         return ($table->columns()[$column->name()]->nullable()->value == BoolNullable::TRUE->value) ? true : false;
     }
 
+    /** Check if column is secured in table based on column string name.
+     *
+     * @param string $columnName
+     * @param TableAbstract $table
+     * @return bool
+     */
     public static function secured_s(string $columnName, TableAbstract $table) : bool
     {
         return ($table->columns()[$columnName]->secured()->value == BoolSecured::TRUE->value) ? true : false;
     }
 
+    /** Check if column is updatable in table based on column string name.
+     *
+     * @param string $columnName
+     * @param TableAbstract $table
+     * @return bool
+     */
     public static function updatable_s(string $columnName, TableAbstract $table) : bool
     {
         return ($table->columns()[$columnName]->updatable()->value == BoolUpdatable::TRUE->value) ? true : false;
     }
 
+    /** Check if column is creatable in table based on column string name.
+     *
+     * @param string $columnName
+     * @param TableAbstract $table
+     * @return bool
+     */
     public static function creatable_s(string $columnName, TableAbstract $table) : bool
     {
         return ($table->columns()[$columnName]->creatable()->value == BoolCreatable::TRUE->value) ? true : false;
     }
 
+    /** Check if column is nullable in table based on column string name.
+     *
+     * @param string $columnName
+     * @param TableAbstract $table
+     * @return bool
+     */
     public static function nullable_s(string $columnName, TableAbstract $table) : bool
     {
         return ($table->columns()[$columnName]->nullable()->value == BoolNullable::TRUE->value) ? true : false;

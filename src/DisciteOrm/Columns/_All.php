@@ -1,6 +1,6 @@
 <?php
 
-namespace DisciteOrm\Tables;
+namespace DisciteOrm\Columns;
 
 use DisciteOrm\Configurations\Contracts\ColumnAbstract;
 

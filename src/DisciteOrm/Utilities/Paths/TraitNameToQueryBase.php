@@ -9,6 +9,11 @@ class TraitNameToQueryBase
     private static string $traitPath = '\\DisciteOrm\\Builder\\Query\\';
 
 
+    /** Render trait name to QueryBase enum.
+     *
+     * @param string $traitName
+     * @return QueryBase
+     */
     public static function render(string $traitName) : QueryBase
     {
         return match ($traitName) {

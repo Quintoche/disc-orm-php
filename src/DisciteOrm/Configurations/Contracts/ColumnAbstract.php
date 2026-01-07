@@ -118,6 +118,13 @@ abstract class ColumnAbstract implements ColumnInterface
      */
     protected ?TableAbstract $indexTable = null;
 
+    /**
+     * The index table name for the column.
+     *
+     * @var string|null
+     */
+    protected ?string $indexTableName = null;
+
 
 
     /**
@@ -336,9 +343,9 @@ abstract class ColumnAbstract implements ColumnInterface
      * 
      * @param TableAbstract|null $indexTable The index table to set. If null, the current index table is returned.
      * 
-     * @return TableAbstract|static Returns the column index table if getting, or the current instance if setting.
+     * @return TableAbstract|null|static Returns the column index table if getting, or the current instance if setting.
      */
-    public function indexTable(?TableAbstract $indexTable = null) : TableAbstract|static
+    public function indexTable(?TableAbstract $indexTable = null) : TableAbstract|null|static
     {
         if($indexTable)
         {
@@ -348,6 +355,26 @@ abstract class ColumnAbstract implements ColumnInterface
         else
         {
             return $this->indexTable;
+        }
+    }
+
+    /**
+     * Get or set the column index table name.
+     * 
+     * @param string|null $indexTableName The index table name to set. If null, the current index table name is returned.
+     * 
+     * @return string|null|static Returns the column index table name if getting, or the current instance if setting.
+     */
+    public function indexTableName(?string $indexTableName = null) : string|null|static
+    {
+        if($indexTableName)
+        {
+            $this->indexTableName = $indexTableName;
+            return $this;
+        }
+        else
+        {
+            return $this->indexTableName;
         }
     }
 

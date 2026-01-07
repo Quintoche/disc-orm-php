@@ -18,13 +18,31 @@ trait InsertQuery
         
         $this->type(QueryType::INSERT);
 
+        $datas = [];
         foreach($data as $column => $value)
         {
-            $this->data[$column] = $value;
+            $datas[$column] = $value;
+        }
+        $this->data[] = $datas;
+
+        if($this->columns !== [])
+        {
+            foreach(array_keys($data) as $column)
+            {
+                if(!in_array($column, $this->columns, true))  
+                {
+                    foreach($this->data as $dataIndex => $dataRow)
+                    {
+                        if(array_key_exists($column, $dataRow)) continue;
+                        $this->data[$dataIndex][$column] = null;
+                    }
+                }
+            }
         }
 
         foreach(array_keys($data) as $column)
         {
+            if(in_array($column, $this->columns, true)) continue;
             $this->columns[] = $column;
         }
 
@@ -42,13 +60,31 @@ trait InsertQuery
     {
         $this->type(QueryType::INSERT);
 
+        $datas = [];
         foreach($data as $column => $value)
         {
-            $this->data[$column] = $value;
+            $datas[$column] = $value;
+        }
+        $this->data[] = $datas;
+
+        if($this->columns !== [])
+        {
+            foreach(array_keys($data) as $column)
+            {
+                if(!in_array($column, $this->columns, true))  
+                {
+                    foreach($this->data as $dataIndex => $dataRow)
+                    {
+                        if(array_key_exists($column, $dataRow)) continue;
+                        $this->data[$dataIndex][$column] = null;
+                    }
+                }
+            }
         }
 
         foreach(array_keys($data) as $column)
         {
+            if(in_array($column, $this->columns, true)) continue;
             $this->columns[] = $column;
         }
 

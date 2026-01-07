@@ -111,9 +111,9 @@ interface ColumnInterface
      * 
      * @param TableAbstract|null $indexTable The index table to set. If null, the current index table is returned.
      * 
-     * @return TableAbstract|static Returns the index table if getting, or the current instance if setting.
+     * @return TableAbstract|null|static Returns the index table if getting, or the current instance if setting.
      */
-    public function indexTable(?TableAbstract $indexTable = null) : TableAbstract|static;
+    public function indexTable(?TableAbstract $indexTable = null) : TableAbstract|null|static;
 }
 
 ?>

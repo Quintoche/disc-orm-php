@@ -6,6 +6,11 @@ use DisciteOrm\DisciteConnection;
 
 class ToStringColumn
 {
+    /** Render column name as SQL string.
+     *
+     * @param string $string
+     * @return string
+     */
     public static function render(string $string): string
     {
         $string = DisciteConnection::$mysqli->escape_string($string);

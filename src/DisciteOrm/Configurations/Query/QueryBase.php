@@ -16,18 +16,18 @@ enum QueryBase : string
     /**
      * SQL INSERT query type.
      */
-    case INSERT = 'INSERT INTO {table} ({columns}) VALUES ({values})';
+    case INSERT = 'INSERT INTO {table} ({columns}) VALUES {values}';
 
     /**
      * SQL UPDATE query type.
      */
-    case UPDATE = 'UPDATE {table} SET {values} WHERE {clauses}';
+    case UPDATE = 'UPDATE {table} SET {values} {clauses}';
     
 
     /**
      * SQL DELETE query type.
      */
-    case DELETE = 'DELETE FROM {table} WHERE {clauses}';
+    case DELETE = 'DELETE FROM {table} {clauses}';
 
     /**
      * Get the QueryBase from a QueryType.

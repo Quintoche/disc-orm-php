@@ -45,11 +45,18 @@ enum TypeIndex: int
     case NORMAL = 245;
 
     /** 
+     * __Index__
+     * 
+     * General index
+    */
+    CASE INDEX = 246;
+
+    /** 
      * __None__
      * 
      * No index
     */
-    case NONE = 246;
+    case NONE = 247;
 }
 
 ?>

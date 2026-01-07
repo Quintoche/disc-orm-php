@@ -2,14 +2,32 @@
 
 namespace DisciteOrm;
 
-use DisciteOrm\Configurations\Contracts\TableAbstract;
-use DisciteOrm\Configurations\Contracts\TableInterface;
+use DisciteOrm\Core\ColumnsManager;
 use DisciteOrm\Core\QueryBuilder;
+use DisciteOrm\Core\TablesManager;
+use DisciteOrm\Reader\AllReader;
+use DisciteOrm\Reader\ColumnsReader;
+use DisciteOrm\Reader\TablesReader;
 use DisciteOrm\Tables\Table;
-use mysqli;
 
 class Database
 {
+    use AllReader;
+    use ColumnsReader;
+    use TablesReader;
+
+    protected TablesManager $tablesManager;
+
+    protected ColumnsManager $columnsManager;
+
+
+    public function __construct(TablesManager $tablesManager, ColumnsManager $columnsManager)
+    {
+        $this->tablesManager = $tablesManager;
+
+        $this->columnsManager = $columnsManager;
+    }
+
     /**
      * Selects the database to use.
      *
@@ -18,15 +36,20 @@ class Database
      */
     public function database(?string $databaseName = null) : self
     {
-        if ($databaseName) {
+        if($databaseName)
+        {
             DisciteConnection::$mysqli->select_db($databaseName);
         }
-
 
         return $this;
     }
 
-
+    /**
+     * Initializes a query builder for the specified table.
+     *
+     * @param string $tableName The name of the table to query.
+     * @return \DisciteOrm\Core\QueryBuilder The query builder instance.
+     */
     public function table(string $tableName): QueryBuilder
     {
         return new QueryBuilder(

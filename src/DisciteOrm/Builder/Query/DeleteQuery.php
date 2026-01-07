@@ -2,12 +2,8 @@
 
 namespace DisciteOrm\Builder\Query;
 
-use DisciteOrm\Configurations\Contracts\ColumnAbstract;
 use DisciteOrm\Configurations\Enums\Query\QueryClauses;
 use DisciteOrm\Configurations\Enums\Query\QueryType;
-use DisciteOrm\Configurations\Query\QueryBase;
-use DisciteOrm\Core\QueryBuilder;
-use DisciteOrm\Utilities\Paths\TraitNameToQueryBase;
 
 trait DeleteQuery
 {

@@ -21,16 +21,31 @@ $disciteORM = new DisciteOrm();
 //     ->type(Type::STANDARD)
 //     ->addColumn($col);
 
-
-echo $disciteORM->database()->table('users')
-    ->select('id', 'name', 'email')
-    ->where('id', '1')
-    ->where('name', 'John Doe')
-    ->where('email', 'john@example.com')
-    ->get();
+$record = $disciteORM->database()->table('users')
+    ->select('*')
+    // ->where('id', '1')
+    // ->where('email', 'john@example.com')
     // ->and()
     // ->create(['name' => 'John Doe', 'email' => 'john@example.com'])
+    // ->create(['email' => 'john@example.cosm','name' => 'John Doe2', 'address'=>'123 Street'])
     // ->update(['name' => 'John Doe'])
+    ->where('name', 'John Doe');
+
+
+var_dump($record->next());
+var_dump($record->next());
+
+$start = microtime(true);
+
+    
+$disciteORM->database()->storeAll();
+$end = microtime(true);
+$duration = ($end - $start) * 1000;
+
+echo '<br/><br/><br/><b>TIME LOAD TABLES AND KEYS</b>';
+    echo '<pre>Execution time: '. number_format($duration, 3, '.', ' ') .' ms</pre>';
+echo '<pre>',var_dump($disciteORM->database()->getColumns()),'</pre>';
+
     // ->delete('id', 1)
     // ->retrieve()
     // ->count()

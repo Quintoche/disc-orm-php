@@ -8,10 +8,25 @@ use DisciteOrm\Utilities\Formats\ToStringValue;
 
 class QueryClausesParser
 {
+    /** 
+     * Clause separator 
+     * 
+     * @var string
+    */
     private const CLAUSE_SEPARATOR = ' AND ';
 
+    /** 
+     * Clause format 
+     * 
+     * @var string
+    */
     private const CLAUSE_FORMAT = '%s %s %s';
 
+    /** Convert clauses to SQL string representation.
+     *
+     * @param array|null $clauses
+     * @return string
+     */
     public static function toSql(?array $clauses) : string
     {
         if(empty($clauses))
@@ -22,6 +37,11 @@ class QueryClausesParser
         return 'WHERE ' . self::render($clauses);
     }
 
+    /** Render clauses as SQL string.
+     *
+     * @param array $clauses
+     * @return string
+     */
     private static function render(array $clauses) : string
     {        
         foreach($clauses as $index => $clause)
@@ -35,6 +55,11 @@ class QueryClausesParser
 
 
 
+    /** Render a single clause as SQL string.
+     *
+     * @param array $clause
+     * @return string
+     */
     private static function renderClause(array $clause) : string
     {
         $field = (is_null($clause['field'])) ? $clause['field'] : self::formatField($clause['field']);
@@ -47,17 +72,33 @@ class QueryClausesParser
         );
     }
 
+    /** Format field name to SQL string.
+     *
+     * @param string $field
+     * @return string
+     */
     private static function formatField(string $field) : string
     {
         return ToStringColumn::render($field);
     }
 
+    /** Format value to SQL string.
+     *
+     * @param mixed $value
+     * @return string
+     */
     private static function formatValue(mixed $value) : string
     {
         return ToStringValue::render($value);
     }
 
-
+    /** Build SQL clause string.
+     *
+     * @param QueryClauses $type
+     * @param mixed $field
+     * @param mixed $value
+     * @return string
+     */
     private static function buildClause(QueryClauses $type, mixed $field, mixed $value) : string
     {
         return match($type)
@@ -83,6 +124,12 @@ class QueryClausesParser
         };
     }
 
+    /** Build value string based on modifier type.
+     *
+     * @param QueryClauses $type
+     * @param mixed $value
+     * @return string
+     */
     private static function buildValue(QueryClauses $type, mixed $value) : string
     {
         return match($type)
@@ -95,7 +142,11 @@ class QueryClausesParser
         };
     }
 
-
+    /** Build group clause string.
+     *
+     * @param QueryClauses $type
+     * @return string
+     */
     private static function buildGroupClause(QueryClauses $type) : string
     {
         return match($type)
@@ -107,11 +158,21 @@ class QueryClausesParser
         };
     }
 
+    /** Check if clause type is a group clause.
+     *
+     * @param QueryClauses $type
+     * @return bool
+     */
     private static function isGroupClause(QueryClauses $type) : bool
     {
         return in_array($type, [QueryClauses::AndGroup, QueryClauses::OrGroup]);
     }
 
+    /** Check if having group exists in clauses.
+     *
+     * @param array $clauses
+     * @return bool
+     */
     private static function havingGroupExists(array $clauses) : bool
     {
         foreach($clauses as $clause)
@@ -125,16 +186,32 @@ class QueryClausesParser
         return false;
     }
 
+    /** Check if first clause is a group clause.
+     *
+     * @param array $clauses
+     * @return bool
+     */
     private static function isFirstClauseAGroup(array $clauses) : bool
     {
         return self::isGroupClause($clauses[0]['type']);
     }
 
+    /** Check if last clause is a group clause.
+     *
+     * @param array $clauses
+     * @return bool
+     */
     private static function isLastClauseAGroup(array $clauses) : bool
     {
         return self::isGroupClause($clauses[count($clauses) - 1]['type']);
     }
 
+    /** Build OR clause string.
+     *
+     * @param mixed $field
+     * @param mixed $value
+     * @return string
+     */
     private static function buildOrClause(mixed $field, mixed $value) : string
     {
         $orClause = [];

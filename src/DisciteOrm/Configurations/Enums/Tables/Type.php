@@ -17,11 +17,11 @@ enum Type: int
     case STANDARD = 531;
 
     /**
-     * __Settlement Configuration Table__
+     * __Lookup Configuration Table__
      * 
-     * Represents a settlement configuration table type.
+     * Represents a lookup configuration table type.
      */
-    case SETTLEMENT_CONFIG = 532;
+    case LOOKUP_CONFIG = 532;
 
     /**
      * __Environment Configuration Table__
@@ -31,11 +31,11 @@ enum Type: int
     case ENVIRONMENT_CONFIG = 533;
 
     /**
-     * __API Configuration Table__
+     * __Archives Table__
      * 
-     * Represents an API configuration table type.
+     * Represents an archives table type.
      */
-    case API_CONFIG = 534;
+    case ARCHIVES = 534;
 
     /**
      * __Logs Table__
