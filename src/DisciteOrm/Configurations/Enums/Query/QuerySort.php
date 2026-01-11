@@ -24,11 +24,18 @@ enum QuerySort: int
     case DESC = 402;
 
     /**
+     * __Random__
+     * 
+     * Sort results in random order.
+     */
+    case RANDOM = 403;
+
+    /**
      * __None__
      * 
      * No specific sorting order.
      */
-    case NONE = 403;
+    case NONE = 404;
 }
 
 ?>
